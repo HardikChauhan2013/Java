@@ -9,7 +9,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 
-public class Program {
+public class Program2_With_Where {
 
 	public static void main(String[] args) {
 
@@ -49,7 +49,8 @@ public class Program {
 		// Using Pure/Native SQL
 		//s.createQuery("")//HQL
 		//s.createSQLQuery("")//Native
-		NativeQuery<Student> q1 = s.createSQLQuery("select * from STUDENT;");
+		NativeQuery<Student> q1 = s.createSQLQuery("select * from STUDENT where stdname=:param1");
+		q1.setParameter("param1", "hardik");
 		q1.addEntity(Student.class);
 		//q1.addEntity(Mark.class);
 
@@ -64,11 +65,19 @@ public class Program {
 		//student0_.studentId as studentI1_0_, student0_.mark as mark2_0_, 
 		//student0_.standard as standard3_0_, student0_.stdname as stdname4_0_ 
 		//from Student student0_
-		Query<Student>  q2 =  s.createQuery("from Student");
+		Query<Student>  q2 =  s.createQuery("from Student where studnetName=:param1");
+		q2.setParameter("param1", "hardik");
 		List<Student> q2_Reqeust = q2.list();
 		for (Student student : q2_Reqeust) {
 			System.out.println(student.studnetName);
 		}
+		
+		/*
+		q2.uniqueResult(); //if record not found exception
+		q2.uniqueResultOptional(); //if record not found null/[]
+		q2.getSingleResult(); //return only one value - sum,Max,Min (mostly use with aggregate function)
+		*/
+		 
 		
 		sf.close();
 
