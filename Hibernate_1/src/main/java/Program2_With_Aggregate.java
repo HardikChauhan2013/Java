@@ -1,3 +1,4 @@
+import java.math.BigInteger;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -9,7 +10,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 
-public class Program {
+public class Program2_With_Aggregate {
 
 	public static void main(String[] args) {
 
@@ -31,7 +32,7 @@ public class Program {
 		Student std1 = new Student();
 		std1.studnetName = "hardik";
 		std1.standard = "1st";
-		std1.mark = 99;
+		std1.mark = 77;
 		s.save(std1);
 
 		// create new student name "hardik"
@@ -49,26 +50,29 @@ public class Program {
 		// Using Pure/Native SQL
 		//s.createQuery("")//HQL
 		//s.createSQLQuery("")//Native
-		NativeQuery<Student> q1 = s.createSQLQuery("select * from STUDENT;");
-		q1.addEntity(Student.class);
-		//q1.addEntity(Mark.class);
-
-		List<Student> q1_Reqeust = q1.list();
+		NativeQuery<BigInteger> q1 = s.createSQLQuery("select sum(mark) from STUDENT");
+	
+		BigInteger q1_Reqeust = q1.getSingleResult();
 		//q1.getResultList();
-		
-		for (Student student : q1_Reqeust) {
-			System.out.println(student.studnetName);
-		}
+		 	System.out.println(q1_Reqeust);
+		 
 		
 		//select 
 		//student0_.studentId as studentI1_0_, student0_.mark as mark2_0_, 
 		//student0_.standard as standard3_0_, student0_.stdname as stdname4_0_ 
 		//from Student student0_
-		Query<Student>  q2 =  s.createQuery("from Student");
-		List<Student> q2_Reqeust = q2.list();
-		for (Student student : q2_Reqeust) {
-			System.out.println(student.studnetName);
-		}
+		Query<Long>  q2 =  s.createQuery("select sum(mark) from Student");
+		Long q2_Reqeust = q2.getSingleResult();
+		//q1.getResultList();
+		 	System.out.println(q2_Reqeust);
+		
+		/*
+		q2.uniqueResult(); //if record not found exception
+		q2.uniqueResultOptional(); //if record not found null/[]
+		q2.getSingleResult(); //return only one value - sum,Max,Min (mostly use with aggregate function)
+		Diff list vs getResultList
+		*/
+		 
 		
 		sf.close();
 
