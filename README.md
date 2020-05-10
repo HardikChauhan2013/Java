@@ -1,5 +1,4 @@
-# Java
-Spring POC
+# Java Spring POC
 
 - Hibranate demo
 - Rest Service dmo
